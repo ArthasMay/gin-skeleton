@@ -1,0 +1,26 @@
+AppDebug: true    # 设置程序所处的模式: debug=true 调试模式，日志优先显示在控制台, debug=false 非调试模式，将日志写入日志文件
+
+UserDBType: "mysql"   # 默认启用 mysql 数据库，备选项：mysql、sqlserver、postgre
+
+HttpServer:
+  Api:
+    Port: ":20191"    # App和前端网站类端口，注意前面有冒号
+  Web:
+    Port: ":20192"    # 后台管理系统端口，注意前面有冒号
+  AllowCrossDemain: true
+
+Mysql:
+  Write:
+    Host: "127.0.0.1"
+    DataBase: "db_stocks"
+    Port: 3306    # 数据库端口，请自行调整
+    Prefix: "tb_"
+    User: "root"
+    Pass: "123456"
+    Charset: "utf8"
+    SetMaxIdleConns: 10
+    SetMaxOpenConns: 128
+    SetConnMaxLifetime: 60
+    ReConnectInterval: 1    # 连接数据库失败，每次重连的时间间隔
+    PingFailRetryTimes: 3
+  IsOpenReadDB: 0     # 
