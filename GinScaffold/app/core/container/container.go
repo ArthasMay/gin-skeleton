@@ -17,7 +17,7 @@ func CreateContainersFactory() *containers {
 type containers struct {
 }
 
-// 1. 以键值对的形式将代码注册到容器
+// 1.以键值对的形式将代码注册到容器
 func (e *containers) Set(key string, value interface{}) (res bool) {
 	if e.Get(key) == nil {
 		sMap.Store(key, value)
@@ -26,12 +26,12 @@ func (e *containers) Set(key string, value interface{}) (res bool) {
 	return
 }
 
-// 2. 删除
+// 2.删除
 func (e *containers) Delete(key string) {
 	sMap.Delete(key)
 }
 
-// 3. 传递键，从容器获取值
+// 3.传递键，从容器获取值
 func (e *containers) Get(key string) interface{} {
 	if value, exists := sMap.Load(key); exists {
 		return value
@@ -39,7 +39,7 @@ func (e *containers) Get(key string) interface{} {
 	return nil
 }
 
-// 4. 根据键的前缀模糊删除容器内注册的内容
+// 4.根据键的前缀模糊删除容器内注册的内容
 func (e *containers) FuzzyDelete(keyPre string) {
 	sMap.Range(func(key, value interface{}) bool {
 		if keyname, ok := key.(string); ok {

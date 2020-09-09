@@ -6,9 +6,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/pprof"
-	"goskeleton/app/utils/yml_config"
+	"goskeleton/app/global/consts"
 	"goskeleton/app/global/variable"
+	"goskeleton/app/utils/yml_config"
 	"goskeleton/app/http/middleware/cors"
+	validatorFactory "goskeleton/app/http/validator/core/factory"
 )
 
 func InitApiRouter() *gin.Engine {
@@ -40,7 +42,7 @@ func InitApiRouter() *gin.Engine {
 	{
 		vApi := vApi.Group("home/")
 		{
-			// vApi.GET("news", )
+			vApi.GET("news", validatorFactory.Create(consts.ValidatorPrefix + "HomeNews"))
 		}
 	}
 	return router
