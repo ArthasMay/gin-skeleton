@@ -4,6 +4,7 @@ import (
 	"goskeleton/app/global/my_errors"
 	"goskeleton/app/global/variable"
 	"log"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -29,16 +30,36 @@ type ymlConfig struct {
 }
 
 // Get 一个原始值
-func (c *ymlConfig)Get(keyName string) interface{} {
+func (c *ymlConfig) Get(keyName string) interface{} {
 	return c.viper.Get(keyName)
 }
 
 // GetString
-func (c *ymlConfig)GetString(keyName string) string {
+func (c *ymlConfig) GetString(keyName string) string {
 	return c.viper.GetString(keyName)
 }
 
+func (c *ymlConfig) GetBool(keyName string) bool {
+	return c.viper.GetBool(keyName)
+}
+
 // GetInt
-func (c *ymlConfig)GetInt(keyName string) int {
+func (c *ymlConfig) GetInt(keyName string) int {
 	return c.viper.GetInt(keyName)
+}
+
+func (c *ymlConfig) GetInt32(keyName string) int32 {
+	return c.viper.GetInt32(keyName)
+}
+
+func (c *ymlConfig) GetInt64(keyName string) int64 {
+	return c.viper.GetInt64(keyName)
+}
+
+func (c *ymlConfig) GetDuration(keyName string) time.Duration {
+	return c.viper.GetDuration(keyName)
+}
+
+func (c *ymlConfig) GetStringSlice(keyName string) []string {
+	return c.viper.GetStringSlice(keyName)
 }
