@@ -5,13 +5,20 @@ import (
 	"goskeleton/app/global/variable"
 	"log"
 	"time"
+	"os"
 
 	"github.com/spf13/viper"
 )
 
 func CreateYamlFactory() *ymlConfig {
 	yamlConfig := viper.New()
-	yamlConfig.AddConfigPath(variable.BasePath + "/config")
+	
+	if middleRelativePath := os.Getenv("mrp"); len(middleRelativePath) > 0 {
+		yamlConfig.AddConfigPath(variable.BasePath + middleRelativePath + "/config")
+	} else {
+		yamlConfig.AddConfigPath(variable.BasePath + "/config")
+	}
+	
 	// 需要读取的配置文件名
 	yamlConfig.SetConfigName("config")
 	// 设置配置文件类型

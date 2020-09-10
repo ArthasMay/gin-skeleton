@@ -35,12 +35,12 @@ func InitApiRouter() *gin.Engine {
 		router.Use(cors.Next())
 	}
 
-	router.Static("/public", "./public")
-	router.StaticFile("abcd", "./public/readme.md")
+	// router.Static("/public", "./public")
+	// router.StaticFile("abcd", "./public/readme.md")
 	
 	vApi := router.Group("/api/v1/")
 	{
-		vApi := vApi.Group("home/")
+	vApi := vApi.Group("home/")
 		{
 			vApi.GET("news", validatorFactory.Create(consts.ValidatorPrefix + "HomeNews"))
 		}
