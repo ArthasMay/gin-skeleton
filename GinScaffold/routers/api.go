@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"net/http"
 	"io"
 	"os"
 
@@ -35,8 +36,13 @@ func InitApiRouter() *gin.Engine {
 		router.Use(cors.Next())
 	}
 
-	// router.Static("/public", "./public")
-	// router.StaticFile("abcd", "./public/readme.md")
+	router.GET("/", func(context *gin.Context) {
+		context.String(http.StatusOK, "Api接口模块：Hello, World！")
+	})
+
+	//处理静态资源（不建议gin框架处理静态资源，参见 Public/readme.md 说明 ）
+	router.Static("/public", "./public")             // 定义静态资源路由与实际目录映射关系
+	router.StaticFile("/abcd", "./public/readme.md") // 可以根据文件名绑定需要返回的文件名
 	
 	vApi := router.Group("/api/v1/")
 	{
