@@ -5,11 +5,22 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch",
+            "name": "api",
             "type": "go",
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceRoot}/GinScaffold/cmd/api",
+            "env": {
+                "mrp": "/../..",  // mrp: middle_relative_path: os.GetWd()在cmd/api之下执行，所以launch补充中间相对路径
+            },
+            "args": []
+        },
+        {
+            "name": "web",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceRoot}/GinScaffold/cmd/web",
             "env": {
                 "mrp": "/../..",  // mrp: middle_relative_path: os.GetWd()在cmd/api之下执行，所以launch补充中间相对路径
             },

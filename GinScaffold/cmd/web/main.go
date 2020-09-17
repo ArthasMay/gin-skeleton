@@ -7,6 +7,6 @@ import (
 )
 
 func main() {
-	router := routers.InitApiRouter()
+	router := routers.InitWebRouter()
 	_ = router.Run(yml_config.CreateYamlFactory().GetString("HttpServer.Web.Port"))
 }

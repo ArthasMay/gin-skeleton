@@ -11,7 +11,6 @@ import (
 
 // 表单参数验证器工厂（勿修改）
 func Create(key string) func(context *gin.Context) {
-	log.Println("sss")
 	if value := container.CreateContainersFactory().Get(key); value != nil {
 		log.Println(value)
 		if val, isOK := value.(interf.ValidatorInterface); isOK {

@@ -7,12 +7,13 @@ import (
 	"io"
 	"goskeleton/app/global/variable"
 	"goskeleton/app/utils/yml_config"
+	"goskeleton/app/http/controller/captcha"
 	"os"
 
 	"github.com/gin-gonic/gin"
 )
 
-func InitWebRouter(context *gin.Engine) {
+func InitWebRouter() *gin.Engine {
 	var router *gin.Engine
 	// 非调试模式（生产模式）日志写入日志文件
 	if yml_config.CreateYamlFactory().GetBool("AppDebug") == false {
@@ -39,7 +40,27 @@ func InitWebRouter(context *gin.Engine) {
 	})
 
 	//处理静态资源（不建议gin框架处理静态资源，参见 public/readme.md 说明 ）
-	router.Static("/public", "./public")             //  定义静态资源路由与实际目录映射关系
+	router.Static("/public", "./public")             // 定义静态资源路由与实际目录映射关系
 	router.StaticFS("/dir", http.Dir("./public"))    // 将public目录内的文件列举展示
 	router.StaticFile("/abcd", "./public/readme.md") // 可以根据文件名绑定需要返回的文件名
+
+	// 创建一个验证码路由
+	verifyCode := router.Group("captcha") 
+	{
+		// 验证码业务，该业务无需专门校验参数，所以可以直接调用控制器
+		verifyCode.GET("/", (&chaptcha.Captcha{}).GenerateId)		// 获取验证码ID
+		verifyCode.GET("/:captchaId", (&chaptcha.Captcha{}).GetImg)	// 获取图像地址
+		verifyCode.GET("/:captchaId/:value", (&chaptcha.Captcha{}).CheckCode) // 校验验证码
+	}
+
+	// 创建一个后端接口组
+	backend := router.Group("/Admin/")
+	{
+		noAuth := backend.Group("users/")
+		{
+			noAuth.Post("register",)
+		}
+	}
+
+	return router
 }
