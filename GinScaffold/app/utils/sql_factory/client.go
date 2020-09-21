@@ -50,7 +50,7 @@ func initSqlServer(sqlType, readOrWrite string) *sql.DB {
 
 	if sqlType == "mysql" {
 		Charset := configFac.GetString(tmpSqlType + "." + readOrWrite + ".Charset")
-		SqlConnString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?ParseTime=True&loc=Local&charset=%s", User, Pass, Host, Port, DataBase, Charset)
+		SqlConnString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=True&loc=Local&charset=%s", User, Pass, Host, Port, DataBase, Charset)
 		switch readOrWrite {
 		case "Write", "Read":
 			tmpDriver, err = sql.Open("mysql", SqlConnString)

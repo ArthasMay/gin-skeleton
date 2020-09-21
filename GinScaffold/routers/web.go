@@ -1,15 +1,17 @@
 package routers
 
 import (
-	"net/http"
-	"goskeleton/app/http/middleware/cors"
-	"github.com/gin-contrib/pprof"
-	"io"
+	"goskeleton/app/global/consts"
 	"goskeleton/app/global/variable"
+	chaptcha "goskeleton/app/http/controller/captcha"
+	"goskeleton/app/http/middleware/cors"
+	validatorFactory "goskeleton/app/http/validator/core/factory"
 	"goskeleton/app/utils/yml_config"
-	"goskeleton/app/http/controller/captcha"
+	"io"
+	"net/http"
 	"os"
 
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 )
 
@@ -45,11 +47,11 @@ func InitWebRouter() *gin.Engine {
 	router.StaticFile("/abcd", "./public/readme.md") // 可以根据文件名绑定需要返回的文件名
 
 	// 创建一个验证码路由
-	verifyCode := router.Group("captcha") 
+	verifyCode := router.Group("captcha")
 	{
 		// 验证码业务，该业务无需专门校验参数，所以可以直接调用控制器
-		verifyCode.GET("/", (&chaptcha.Captcha{}).GenerateId)		// 获取验证码ID
-		verifyCode.GET("/:captchaId", (&chaptcha.Captcha{}).GetImg)	// 获取图像地址
+		verifyCode.GET("/", (&chaptcha.Captcha{}).GenerateId)                 // 获取验证码ID
+		verifyCode.GET("/:captchaId", (&chaptcha.Captcha{}).GetImg)           // 获取图像地址
 		verifyCode.GET("/:captchaId/:value", (&chaptcha.Captcha{}).CheckCode) // 校验验证码
 	}
 
@@ -58,7 +60,7 @@ func InitWebRouter() *gin.Engine {
 	{
 		noAuth := backend.Group("users/")
 		{
-			noAuth.Post("register",)
+			noAuth.POST("register", validatorFactory.Create(consts.ValidatorPrefix+"UsersRegister"))
 		}
 	}
 

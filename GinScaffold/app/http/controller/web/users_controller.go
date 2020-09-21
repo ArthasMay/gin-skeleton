@@ -3,6 +3,9 @@ package web
 import (
 	"github.com/gin-gonic/gin"
 	"goskeleton/app/global/consts"
+	"goskeleton/app/service/users/curd"
+	"goskeleton/app/utils/response"
+	"net/http"
 )
 
 type Users struct {
@@ -14,4 +17,22 @@ func (u *Users) Register(context *gin.Context) {
 	name := context.GetString(consts.ValidatorPrefix + "name")
 	pass := context.GetString(consts.ValidatorPrefix + "pass")
 	userIp := context.ClientIP()
+
+	if curd.CreateUserCurdFactory().Register(name, pass, userIp) {
+		response.ReturnJson(
+			context,
+			http.StatusOK,
+			consts.CurdStatusOkCode,
+			consts.CurdStatusOkMsg,
+			"",
+		)
+	} else {
+		response.ReturnJson(
+			context,
+			http.StatusOK,
+			consts.CurdCreatFailCode,
+			consts.CurdCreatFailMsg,
+			"",
+		)
+	}
 }

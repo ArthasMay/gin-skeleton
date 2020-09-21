@@ -4,6 +4,8 @@ import (
 	"goskeleton/app/global/my_errors"
 	"goskeleton/app/global/variable"
 	"goskeleton/app/http/validator/common/register_validator"
+	"goskeleton/app/service/sys_log_hook"
+	"goskeleton/app/utils/zap_factory"
 	"log"
 	"os"
 )
@@ -33,7 +35,7 @@ func init() {
 	checkRequiredFolders()
 
 	// 3.初始化全局日志句柄，并载入日志钩子处理函数
-	// variable.ZapLog = zap_factory.CreateZapFactory(sys_log_hook.ZapLogHandler)
+	variable.ZapLog = zap_factory.CreateZapFactory(sys_log_hook.ZapLogHandler)
 
 	// 4.初始化表单验证器，将所有需要的验证器都注册到容器中
 	register_validator.RegisterValidator()

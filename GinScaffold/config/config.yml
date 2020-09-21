@@ -13,10 +13,10 @@ Mysql:
   Write:
     Host: "127.0.0.1"
     DataBase: "db_stocks"
-    Port: 3308                        #注意，非3306，请自行调整
+    Port: 3307                        #注意，非3306，请自行调整
     Prefix: "tb_"
     User: "root"
-    Pass: "DRsXT5ZJ6Oi55LPQ"
+    Pass: "123456"
     Charset: "utf8"
     SetMaxIdleConns: 10
     SetMaxOpenConns: 128
@@ -27,10 +27,10 @@ Mysql:
   Read:
     Host: "192.168.8.62"
     DataBase: "db_stocks"
-    Port: 3308                        #注意，非3306，请自行调整
+    Port: 3307                        #注意，非3306，请自行调整
     Prefix: "tb_"
     User: "root"
-    Pass: "yourPassword"
+    Pass: "123456"
     Charset: "utf8"
     SetMaxIdleConns: 10
     SetMaxOpenConns: 128
@@ -44,7 +44,7 @@ SqlServer:
     DataBase: "db_goskeleton"
     Port: 1433
     Prefix: "tb_"
-    User: "Sa"
+    User: "root"
     Pass: "secret2017"
     SetMaxIdleConns: 10
     SetMaxOpenConns: 128

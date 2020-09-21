@@ -8,6 +8,8 @@ import (
 )
 
 // 定义一个全局事件存储变量，本模块只负责存储 键 => 函数 ， 相对容器来说功能稍弱，但是调用更加简单、方便、快捷
+// sync.Map 无需初始化
+// http://c.biancheng.net/view/34.html
 var sMap sync.Map
 
 // 创建一个事件管理工厂：event_manage都是使用的时候创建的，但是操作的都是 sMap 这个全局变量
