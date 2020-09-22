@@ -42,9 +42,16 @@ func InitWebRouter() *gin.Engine {
 	})
 
 	//处理静态资源（不建议gin框架处理静态资源，参见 public/readme.md 说明 ）
-	router.Static("/public", "./public")             // 定义静态资源路由与实际目录映射关系
-	router.StaticFS("/dir", http.Dir("./public"))    // 将public目录内的文件列举展示
-	router.StaticFile("/abcd", "./public/readme.md") // 可以根据文件名绑定需要返回的文件名
+	mrp := os.Getenv("mrp")
+	if len(mrp) > 0 {
+		router.Static("/public", "./" + mrp + "/public")             // 定义静态资源路由与实际目录映射关系
+		router.StaticFS("/dir", "./" + http.Dir(mrp + "/public"))    // 将public目录内的文件列举展示
+		router.StaticFile("/abcd", "./" + mrp + "/public/readme.md") // 可以根据文件名绑定需要返回的文件名
+	} else {
+		router.Static("/public", "./public")             // 定义静态资源路由与实际目录映射关系
+		router.StaticFS("/dir", http.Dir("./public"))    // 将public目录内的文件列举展示
+		router.StaticFile("/abcd", "./public/readme.md") // 可以根据文件名绑定需要返回的文件名
+	}
 
 	// 创建一个验证码路由
 	verifyCode := router.Group("captcha")
@@ -56,7 +63,7 @@ func InitWebRouter() *gin.Engine {
 	}
 
 	// 创建一个后端接口组
-	backend := router.Group("/Admin/")
+	backend := router.Group("/admin/")
 	{
 		noAuth := backend.Group("users/")
 		{

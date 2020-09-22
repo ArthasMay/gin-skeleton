@@ -36,3 +36,7 @@ func (u *Users) Register(context *gin.Context) {
 		)
 	}
 }
+
+func (u *Users) Login(context *gin.Context) {
+	
+}

@@ -18,6 +18,9 @@ func RegisterValidator() {
 	key = consts.ValidatorPrefix + "UsersRegister"
 	containers.Set(key, users.Register{})
 
+	key = consts.ValidatorPrefix + "UserLogin"
+	// containers.Set(key, user)
+
 	// Api Module
 	// 注册门户表单参数验证器
 	key = consts.ValidatorPrefix + "HomeNews"
