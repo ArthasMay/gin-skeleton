@@ -4,7 +4,7 @@ import (
 	"goskeleton/app/global/consts"
 	"goskeleton/app/model"
 	"goskeleton/app/service/users/curd"
-	usertoken "goskeleton/app/service/users/token"
+	userstoken "goskeleton/app/service/users/token"
 	"goskeleton/app/utils/response"
 	"net/http"
 	"time"
@@ -53,7 +53,7 @@ func (u *Users) Login(context *gin.Context) {
 	userModel := model.CreateUserFactory("").Login(name, pass)
 	if userModel != nil {
 		// 3. 若是查询到用户信息，生成token，并且把 token 落表 token 表中
-		userTokenFactory := usertoken.CreateUserTokenFactory()
+		userTokenFactory := userstoken.CreateUserTokenFactory()
 		if userToken, err := userTokenFactory.GenerateToken(userModel.Id, userModel.UserName, userModel.Phone, consts.JwtTokenCreatedExpireAt); err == nil {
 			if userTokenFactory.RecordUserToken(userToken, context.ClientIP()) {
 				data := gin.H{
@@ -87,7 +87,7 @@ func (u *Users) Login(context *gin.Context) {
 // 刷新token
 func (u *Users) RefreshToken(context *gin.Context) {
 	token := context.GetString(consts.ValidatorPrefix + "token")
-	if newToken, ok := usertoken.CreateUserTokenFactory().RefreshUserToken(token, context.ClientIP()); ok {
+	if newToken, ok := userstoken.CreateUserTokenFactory().RefreshUserToken(token, context.ClientIP()); ok {
 		res := gin.H{
 			"token": newToken,
 		}

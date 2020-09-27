@@ -6,6 +6,7 @@ import (
 	chaptcha "goskeleton/app/http/controller/captcha"
 	"goskeleton/app/http/middleware/cors"
 	validatorFactory "goskeleton/app/http/validator/core/factory"
+	"goskeleton/app/http/middleware/authorization"
 	"goskeleton/app/utils/yml_config"
 	"io"
 	"net/http"
@@ -65,13 +66,24 @@ func InitWebRouter() *gin.Engine {
 	// 创建一个后端接口组
 	backend := router.Group("/admin/")
 	{
+		// 【不需要】中间件验证的路由  用户注册、登录
 		noAuth := backend.Group("users/")
 		{
 			noAuth.POST("register", validatorFactory.Create(consts.ValidatorPrefix + "UsersRegister"))
 			noAuth.POST("login", validatorFactory.Create(consts.ValidatorPrefix + "UserLogin"))
 			noAuth.POST("refreshtoken", validatorFactory.Create(consts.ValidatorPrefix + "RefreshToken"))
 		}
+
+		// 需要中间件验证的路由
+		backend.Use(authorization.CheckAuth()) 
+		{
+			// users := backend.Group("users/")
+			{
+				
+			}
+		}
 	}
+	
 
 	return router
 }

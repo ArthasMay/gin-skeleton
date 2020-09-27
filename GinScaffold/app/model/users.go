@@ -3,7 +3,7 @@ package model
 import (
 	"fmt"
 	"go.uber.org/zap"
-	// "goskeleton/app/global/consts"
+	"goskeleton/app/global/consts"
 	"goskeleton/app/global/variable"
 	"goskeleton/app/utils/md5_encrypt"
 	"goskeleton/app/utils/yml_config"
@@ -78,10 +78,31 @@ func (u *userModel) OauthRefreshToken(userId, expiresAt int64, oldToken, newToke
 	// 	return true
 	// }
 	// return false
-	sql := "UPDATE   tb_oauth_access_tokens   SET  token=? ,expires_at=FROM_UNIXTIME(?),client_ip=?,updated_at=NOW()  WHERE   fr_user_id=? AND token=?"
+	sql := "UPDATE tb_oauth_access_tokens SET token=?, expires_at=FROM_UNIXTIME(?), client_ip=?, updated_at=NOW() WHERE fr_user_id=? AND token=?"
 	variable.ZapLog.Sugar().Info(sql, newToken, expiresAt, clientIp, userId, oldToken)
 	if u.ExecuteSql(sql, newToken, expiresAt, clientIp, userId, oldToken) > 0 {
 		return true
+	}
+	return false
+}
+
+// 校验token
+func (u *userModel) OauthCheckTokenIsOk(userId int64, token string) bool {
+	sql := "SELECT token FROM tb_oauth_access_tokens WHERE fr_user_id=? AND revoked=0 AND expires_at>NOW() ORDER BY update_at DESC LIMIT ?"
+	rows := u.QuerySql(sql, userId, consts.JwtTokenOnlineUsers)
+	
+	if rows != nil {
+		for rows.Next() {
+			var tmpToken string
+			err := rows.Scan(&tmpToken) 
+			if err == nil {
+				if tmpToken == token {
+					_ = rows.Close()
+					return true
+				}
+			}
+		}
+		_ = rows.Close()
 	}
 	return false
 }
