@@ -19,7 +19,10 @@ func RegisterValidator() {
 	containers.Set(key, users.Register{})
 
 	key = consts.ValidatorPrefix + "UserLogin"
-	// containers.Set(key, user)
+	containers.Set(key, users.Login{})
+
+	key = consts.ValidatorPrefix + "RefreshToken"
+	containers.Set(key, users.RefreshToken{})
 
 	// Api Module
 	// 注册门户表单参数验证器

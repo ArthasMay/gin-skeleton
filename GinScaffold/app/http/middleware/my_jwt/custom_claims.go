@@ -5,7 +5,7 @@ import "github.com/dgrijalva/jwt-go"
 type CustomClaims struct {
 	UserId int64  `form:"userid" json:"userid"`
 	Name   string `form:"name" json:"name"`
-	Pass   string `form:"pass" json:"pass"`
+	Phone  string `form:"phone" json:"phone"`
 	jwt.StandardClaims
 }
 

@@ -85,7 +85,7 @@ labelHere:
 
 // 更新token
 func (j *JwtSign) RefreshToken(tokenString string, extraAddSeconds int64) (string, error) {
-	if customClaims, err := j.ParseToken(tokenString); err != nil {
+	if customClaims, err := j.ParseToken(tokenString); err == nil {
 		customClaims.ExpiresAt = time.Now().Unix() + extraAddSeconds
 		return j.CreateToken(*customClaims)
 	} else {

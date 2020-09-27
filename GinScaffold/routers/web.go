@@ -67,7 +67,9 @@ func InitWebRouter() *gin.Engine {
 	{
 		noAuth := backend.Group("users/")
 		{
-			noAuth.POST("register", validatorFactory.Create(consts.ValidatorPrefix+"UsersRegister"))
+			noAuth.POST("register", validatorFactory.Create(consts.ValidatorPrefix + "UsersRegister"))
+			noAuth.POST("login", validatorFactory.Create(consts.ValidatorPrefix + "UserLogin"))
+			noAuth.POST("refreshtoken", validatorFactory.Create(consts.ValidatorPrefix + "RefreshToken"))
 		}
 	}
 
