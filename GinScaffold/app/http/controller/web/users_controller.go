@@ -109,4 +109,39 @@ func (u *Users) RefreshToken(context *gin.Context) {
 	}
 }
 
+// 查询用户（show）
+func (u *Users) Show(context *gin.Context) {
+	name := context.GetString(consts.ValidatorPrefix + "name")
+	// context GetKey 返回的是float64, 后面可以研究下是不是keys创建的时候设置的
+	page := context.GetFloat64(consts.ValidatorPrefix + "page")
+	limits := context.GetFloat64(consts.ValidatorPrefix + "limits")
+	limitStart := (page - 1) * limits
+	
+	showList := model.CreateUserFactory("").Show(name, limitStart, limits)
+	if showList != nil {
+		response.ReturnJson(context, http.StatusOK, consts.CurdStatusOkCode, consts.CurdStatusOkMsg, showList)
+	} else {
+		response.ReturnJson(context, http.StatusOK, consts.CurdSelectFailCode, consts.CurdSelectFailMsg, "")
+	}
+}
+
+// 新增用户（store）
+func (u *Users) Store(context *gin.Context) {
+	name := context.GetString(consts.ValidatorPrefix + "name")
+	pass := context.GetString(consts.ValidatorPrefix + "pass")
+	realName := context.GetString(consts.ValidatorPrefix + "real_name")
+	phone := context.GetString(consts.ValidatorPrefix + "phone")
+	remark := context.GetString(consts.ValidatorPrefix + "remark")
+
+	if curd.CreateUserCurdFactory().Store(name, pass, realName, phone, remark) {
+		response.ReturnJson(context, http.StatusOK, consts.CurdStatusOkCode, consts.CurdStatusOkMsg, "")
+	} else {
+		response.ReturnJson(context, http.StatusOK, consts.CurdCreatFailCode, consts.CurdCreatFailMsg, "")
+	}
+}
+
+// 更改用户 (update)
+func (u *Users) Update(context *gin.Context) {
+	
+}
 

@@ -13,7 +13,7 @@ Mysql:
   Write:
     Host: "127.0.0.1"
     DataBase: "db_stocks"
-    Port: 3307                        #注意，非3306，请自行调整
+    Port: 3306                        #注意，非3306，请自行调整
     Prefix: "tb_"
     User: "root"
     Pass: "123456"
@@ -27,7 +27,7 @@ Mysql:
   Read:
     Host: "192.168.8.62"
     DataBase: "db_stocks"
-    Port: 3307                        #注意，非3306，请自行调整
+    Port: 3306                        #注意，非3306，请自行调整
     Prefix: "tb_"
     User: "root"
     Pass: "123456"

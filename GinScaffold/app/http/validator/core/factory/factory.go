@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"goskeleton/app/core/container"
 	"goskeleton/app/http/validator/core/interf"
-	// "goskeleton/app/global/my_errors"
-	// "goskeleton/app/global/variable"
+	"goskeleton/app/global/my_errors"
+	"goskeleton/app/global/variable"
 	"log"
 )
 
@@ -18,6 +18,6 @@ func Create(key string) func(context *gin.Context) {
 		}
 	}
 	
-	// variable.ZapLog.Error(my_errors.ErrorsValidatorNotExists + ", 验证器模块：" + key)
+	variable.ZapLog.Error(my_errors.ErrorsValidatorNotExists + ", 验证器模块：" + key)
 	return nil
 }

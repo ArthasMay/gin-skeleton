@@ -88,7 +88,7 @@ func (u *userModel) OauthRefreshToken(userId, expiresAt int64, oldToken, newToke
 
 // 校验token
 func (u *userModel) OauthCheckTokenIsOk(userId int64, token string) bool {
-	sql := "SELECT token FROM tb_oauth_access_tokens WHERE fr_user_id=? AND revoked=0 AND expires_at>NOW() ORDER BY update_at DESC LIMIT ?"
+	sql := "SELECT token FROM tb_oauth_access_tokens WHERE fr_user_id=? AND revoked=0 AND expires_at>NOW() ORDER BY updated_at DESC LIMIT ?"
 	rows := u.QuerySql(sql, userId, consts.JwtTokenOnlineUsers)
 	
 	if rows != nil {
@@ -103,6 +103,34 @@ func (u *userModel) OauthCheckTokenIsOk(userId int64, token string) bool {
 			}
 		}
 		_ = rows.Close()
+	}
+	return false
+}
+
+// 查询（根据关键词模糊查询）
+func (u *userModel) Show(username string, limitStart, limitItems float64) []userModel {
+	// sql := "SELECT `id` `usename` `realname` `phone` `status` FROM `tb_users` WHERE `status`=1 AND `usename` LIKE ? LIMIT ?,?"
+	sql := "SELECT  `id`, `username`, `real_name`, `phone`, `status`  FROM  `tb_users`  WHERE `status`=1 and   username like ? LIMIT ?,?"
+	rows := u.QuerySql(sql, "%"+username+"%", limitStart, limitItems)
+	if rows != nil {
+		temp := make([]userModel, 0)
+		for rows.Next() {
+			err := rows.Scan(&u.Id, &u.UserName, &u.RealName, &u.Phone, &u.Status)
+			if err == nil {
+				temp = append(temp, *u)
+			} else {
+				variable.ZapLog.Error("sql查询错误", zap.Error(err))
+			}
+		}
+		return temp
+	}
+	return nil
+}
+
+func (u *userModel) Store(username string, pass string, realName string, phone string, remark string) bool {
+	sql := "INSERT INTO `tb_users` (username, pass, real_name, phone, remark) SELECT ?,?,?,?,? FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM tb_users WHERE username=?)" 
+	if u.ExecuteSql(sql, username, pass, realName, phone, remark, username) > 0 {
+		return true
 	}
 	return false
 }

@@ -77,9 +77,10 @@ func InitWebRouter() *gin.Engine {
 		// 需要中间件验证的路由
 		backend.Use(authorization.CheckAuth()) 
 		{
-			// users := backend.Group("users/")
+			users := backend.Group("users/")
 			{
-				
+				users.GET("show", validatorFactory.Create(consts.ValidatorPrefix + "UsersShow"))
+				users.POST("store", validatorFactory.Create(consts.ValidatorPrefix + "UserStore"))
 			}
 		}
 	}

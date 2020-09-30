@@ -83,9 +83,10 @@ func (u *userToken) isNotExpired(token string) (*my_jwt.CustomClaims, int) {
 	return nil, consts.JwtTokenInvalid
 }
 
+// 校验 token 是否有效
 func (u *userToken) IsEffective(token string) bool {
 	customClaims, code := u.isNotExpired(token)
-	if consts.JwtTokenInvalid == code {
+	if consts.JwtTokenOK == code {
 		if model.CreateUserFactory("").OauthCheckTokenIsOk(customClaims.UserId, token) {
 			return true
 		}

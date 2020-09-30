@@ -25,7 +25,7 @@ import (
 type Register struct {
 	Base
 	// 必填，密码长度范围：【3,20】闭区间
-	Pass string `form:"pass" json:"pass" binding:"required,min=3,max=20"`
+	Pass  string `form:"pass" json:"pass" binding:"required,min=3,max=20"`
 	// 验证规则：必填，长度必须=11
 	Phone string `form:"phone" json:"phone" binding:"required,len=11"`    
 }
